@@ -3,6 +3,7 @@ using AutoMapper;
 using RainfallAPI.Application.Contracts;
 using RainfallAPI.Application.Exceptions;
 using RainfallAPI.Application.Response;
+using RainfallAPI.Domain;
 
 namespace RainfallAPI.Application.Services
 {

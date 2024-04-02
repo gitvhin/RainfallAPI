@@ -30,20 +30,20 @@ namespace RainfallAPI.Controllers
             }
             catch (InvalidRequestException ex)
             {
-                return BadRequest(ex.CreateErrorResponse());
+                return BadRequest(CreateErrorResponse("Invalid request", ex.PropertyName, ex.Message));
             }
             catch (NotFoundException ex)
             {
-                return NotFound(ex.CreateErrorResponse());
+                return NotFound(CreateErrorResponse("Not found", ex.PropertyName, ex.Message));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, CreateError500("server", ErrorMessages.InternalServerError, ex.Message));
+                return StatusCode(500, CreateErrorResponse("Server error", "server", ex.Message));
             }
         }
 
-        // Creates a custom 500 error response
-        private ErrorResponse CreateError500(string propertyName, string message, string errorMessage)
+        // Creates a custom error response
+        private ErrorResponse CreateErrorResponse(string message, string propertyName, string errorMessage)
         {
             return new ErrorResponse
             {

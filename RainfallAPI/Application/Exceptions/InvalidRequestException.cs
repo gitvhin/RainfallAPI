@@ -12,15 +12,5 @@ namespace RainfallAPI.Application.Exceptions
         {
             PropertyName = propertyName;
         }
-
-        // Creates an error response for this exception
-        public ErrorResponse CreateErrorResponse()
-        {
-            return new ErrorResponse
-            {
-                Message = "Invalid request",
-                Detail = new List<ErrorDetail> { new ErrorDetail { PropertyName = PropertyName, Message = Message } }
-            };
-        }
     }
 }

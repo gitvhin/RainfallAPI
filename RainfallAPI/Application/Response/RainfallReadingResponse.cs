@@ -1,4 +1,6 @@
 ﻿// Represents the response for rainfall readings
+using RainfallAPI.Domain;
+
 namespace RainfallAPI.Application.Response
 {
     public class RainfallReadingResponse
@@ -9,8 +11,3 @@ namespace RainfallAPI.Application.Response
 }
 
 
-public class RainfallReading
-{
-    public DateTime DateMeasured { get; set; }
-    public decimal AmountMeasured { get; set; }
-}

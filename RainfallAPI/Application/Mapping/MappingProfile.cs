@@ -1,6 +1,7 @@
 ﻿// Responsible for defining mapping profiles for AutoMapper
 using AutoMapper;
 using RainfallAPI.Application.Response;
+using RainfallAPI.Domain;
 
 namespace RainfallAPI.Application.Mapping
 {
