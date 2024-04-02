@@ -7,6 +7,7 @@ using RainfallAPI.Application.Exceptions;
 using RainfallAPI.Application.Response;
 using RainfallAPI.Application.Services;
 using RainfallAPI.Constants;
+using System;
 using System.Collections.Generic;
 using RainfallAPI.Application.Mapping;
 
@@ -14,58 +15,61 @@ namespace RainfallAPI.Tests
 {
     public class RainfallServiceTests
     {
+        private Mock<IExternalAPIService> _externalApiServiceMock;
+        private IMapper _mapper;
+
+        [SetUp]
+        public void Setup()
+        {
+            _externalApiServiceMock = new Mock<IExternalAPIService>();
+            _mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>()));
+        }
+
         [Test]
         public async Task GetRainfallReadingsAsync_CorrectStationId_ReturnsValidResponse()
         {
             // Arrange
-            var externalApiServiceMock = new Mock<IExternalAPIService>();
-            var mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>()));
-
-            var service = new RainfallService(externalApiServiceMock.Object, mapper);
+            var expectedItems = new List<Item>
+            {
+                new Item { Id = "1", DateTime = DateTime.Now, Measure = "test", Value = 1.0 }
+            };
 
             var externalApiResponse = new ExternalAPIResponse
             {
-                Items = new List<Item>
-                {
-                    new Item { Id = "1", DateTime = DateTime.Now, Measure = "test", Value = 1.0 }                   
-                }
+                Items = expectedItems
             };
 
-            externalApiServiceMock.Setup(x => x.GetRainfallReadingsFromExternalApiAsync(It.IsAny<string>(), It.IsAny<int>()))
+            _externalApiServiceMock.Setup(x => x.GetRainfallReadingsFromExternalApiAsync("CorrectStationId", It.IsAny<int>()))
                                   .ReturnsAsync(externalApiResponse);
+
+            var service = new RainfallService(_externalApiServiceMock.Object, _mapper);
 
             // Act
             var result = await service.GetRainfallReadingsAsync("CorrectStationId");
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsNotNull(result.Readings);
+            Assert.AreEqual(expectedItems.Count, result.Readings.Count);            
         }
 
         [Test]
         public void GetRainfallReadingsAsync_WrongStationId_ThrowsNotFoundException()
         {
             // Arrange
-            var externalApiServiceMock = new Mock<IExternalAPIService>();
-            var mapperMock = new Mock<IMapper>();
-
-            var service = new RainfallService(externalApiServiceMock.Object, mapperMock.Object);
-
-            externalApiServiceMock.Setup(x => x.GetRainfallReadingsFromExternalApiAsync(It.IsAny<string>(), It.IsAny<int>()))
+            _externalApiServiceMock.Setup(x => x.GetRainfallReadingsFromExternalApiAsync("WrongStationId", It.IsAny<int>()))
                                   .ThrowsAsync(new NotFoundException("stationId", Constants.ErrorMessages.NotFound));
+
+            var service = new RainfallService(_externalApiServiceMock.Object, _mapper);
 
             // Act & Assert
             Assert.ThrowsAsync<NotFoundException>(() => service.GetRainfallReadingsAsync("WrongStationId"));
         }
 
-        [Test]        
+        [Test]
         public void GetRainfallReadingsAsync_NoStationId_ThrowsInvalidRequestException()
         {
             // Arrange
-            var externalApiServiceMock = new Mock<IExternalAPIService>();
-            var mapperMock = new Mock<IMapper>();
-
-            var service = new RainfallService(externalApiServiceMock.Object, mapperMock.Object);
+            var service = new RainfallService(_externalApiServiceMock.Object, _mapper);
 
             // Act & Assert
             Assert.ThrowsAsync<InvalidRequestException>(() => service.GetRainfallReadingsAsync(""));
