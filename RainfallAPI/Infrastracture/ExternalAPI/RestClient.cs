@@ -8,17 +8,19 @@ namespace RainfallAPI.Infrastracture.ExternalAPI
     public class RestClient : IExternalAPIService
     {
         private readonly HttpClient _httpClient;
+        private readonly IConfiguration _configuration;
 
-        public RestClient(HttpClient httpClient)
+        public RestClient(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            _configuration = configuration;
         }
 
         // Retrieves rainfall readings from an external API asynchronously
         public async Task<ExternalAPIResponse> GetRainfallReadingsFromExternalApiAsync(string stationId, int count)
         {
             // Make HTTP request to external API
-            var apiBaseUrl = "https://environment.data.gov.uk";
+            var apiBaseUrl = _configuration.GetValue<string>("ApiSettings:BaseUrl");
             var apiUrl = $"{apiBaseUrl}/flood-monitoring/id/stations/{stationId}/readings?_limit={count}";
             var response = await _httpClient.GetAsync(apiUrl);
 
