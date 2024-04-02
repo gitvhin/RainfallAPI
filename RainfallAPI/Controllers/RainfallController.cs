@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿// Responsible for handling HTTP requests related to rainfall readings
+using Microsoft.AspNetCore.Mvc;
 using RainfallAPI.Application.Contracts;
 using RainfallAPI.Application.Response;
 using RainfallAPI.Application.Exceptions;
@@ -17,6 +18,7 @@ namespace RainfallAPI.Controllers
             _rainfallService = rainfallService ?? throw new ArgumentNullException(nameof(rainfallService));
         }
 
+        // Retrieves rainfall readings for a specific station
         [HttpGet("id/{stationId}/readings")]
         public async Task<IActionResult> GetRainfallReadings(string stationId, int count = 10)
         {
@@ -40,6 +42,7 @@ namespace RainfallAPI.Controllers
             }
         }
 
+        // Creates a custom 500 error response
         private ErrorResponse CreateError500(string propertyName, string message, string errorMessage)
         {
             return new ErrorResponse

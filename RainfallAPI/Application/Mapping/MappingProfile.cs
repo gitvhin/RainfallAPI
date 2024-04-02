@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿// Responsible for defining mapping profiles for AutoMapper
+using AutoMapper;
 using RainfallAPI.Application.Response;
 
 namespace RainfallAPI.Application.Mapping
@@ -7,6 +8,7 @@ namespace RainfallAPI.Application.Mapping
     {
         public MappingProfile()
         {
+            // Maps Item to RainfallReading
             CreateMap<Item, RainfallReading>()
                 .ForMember(dest => dest.DateMeasured, opt => opt.MapFrom(src => src.DateTime))
                 .ForMember(dest => dest.AmountMeasured, opt => opt.MapFrom(src => (decimal)src.Value));

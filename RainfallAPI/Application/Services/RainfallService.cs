@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿// Implements the core business logic of the application
+using AutoMapper;
 using RainfallAPI.Application.Contracts;
 using RainfallAPI.Application.Exceptions;
 using RainfallAPI.Application.Response;
@@ -16,8 +17,10 @@ namespace RainfallAPI.Application.Services
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
+        // Retrieves rainfall readings asynchronously
         public async Task<RainfallReadingResponse> GetRainfallReadingsAsync(string stationId, int count = 10)
         {
+            // Retrieve rainfall readings from external API
             var externalApiResponse = await _externalApiService.GetRainfallReadingsFromExternalApiAsync(stationId, count);
 
             // Implement mapping logic from external API response to RainfallReading entities
