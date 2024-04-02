@@ -20,18 +20,29 @@ namespace RainfallAPI.Application.Services
         // Retrieves rainfall readings asynchronously
         public async Task<RainfallReadingResponse> GetRainfallReadingsAsync(string stationId, int count = 10)
         {
+            ValidateRequest(stationId, count);
+
             // Retrieve rainfall readings from external API
             var externalApiResponse = await _externalApiService.GetRainfallReadingsFromExternalApiAsync(stationId, count);
 
+            // Check if the response contains data
+            if (externalApiResponse.Items == null || externalApiResponse.Items.Count == 0)
+                throw new NotFoundException("stationId", Constants.ErrorMessages.NotFound);
+
             // Implement mapping logic from external API response to RainfallReading entities
             var rainfallReadings = _mapper.Map<List<Item>, List<RainfallReading>>(externalApiResponse.Items);
-            
-            if (rainfallReadings is null || rainfallReadings.Count == 0)
-                throw new NotFoundException("stationId", Constants.ErrorMessages.NotFound);
-            else if (externalApiResponse is null)
-                throw new InvalidRequestException("stationId", Constants.ErrorMessages.InvalidRequest);
 
             return new RainfallReadingResponse { Readings = rainfallReadings };
+        }
+
+        // Validates the request parameters
+        private void ValidateRequest(string stationId, int count)
+        {
+            if (string.IsNullOrEmpty(stationId))
+                throw new InvalidRequestException("stationId", Constants.ErrorMessages.InvalidRequest);
+
+            if (count <= 0 || count > 100)
+                throw new InvalidRequestException("count", Constants.ErrorMessages.InvalidRequest);
         }
     }
 }
