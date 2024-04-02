@@ -22,7 +22,7 @@ namespace RainfallAPI.Application.Services
 
             // Implement mapping logic from external API response to RainfallReading entities
             var rainfallReadings = _mapper.Map<List<Item>, List<RainfallReading>>(externalApiResponse.Items);
-            rainfallReadings = null;
+            
             if (rainfallReadings is null || rainfallReadings.Count == 0)
                 throw new NotFoundException("stationId", Constants.ErrorMessages.NotFound);
             else if (externalApiResponse is null)
