@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using RainfallAPI.Application.Response;
+﻿using RainfallAPI.Application.Response;
 
 namespace RainfallAPI.Application.Contracts
 {

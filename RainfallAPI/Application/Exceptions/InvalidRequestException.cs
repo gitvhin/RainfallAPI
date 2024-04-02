@@ -1,5 +1,4 @@
 ﻿using RainfallAPI.Application.Response;
-using RainfallAPI.Constants;
 
 namespace RainfallAPI.Application.Exceptions
 {

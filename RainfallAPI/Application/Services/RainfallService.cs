@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.Extensions.Configuration;
+﻿using AutoMapper;
 using RainfallAPI.Application.Contracts;
 using RainfallAPI.Application.Exceptions;
 using RainfallAPI.Application.Response;
