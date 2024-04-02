@@ -68,7 +68,7 @@ namespace RainfallAPI.Tests
             var service = new RainfallService(externalApiServiceMock.Object, mapperMock.Object);
 
             // Act & Assert
-            Assert.ThrowsAsync<InvalidRequestException>(() => service.GetRainfallReadingsAsync("NoStationId"));
+            Assert.ThrowsAsync<InvalidRequestException>(() => service.GetRainfallReadingsAsync(""));
         }
     }
 }
