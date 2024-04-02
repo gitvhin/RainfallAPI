@@ -1,4 +1,5 @@
 ﻿using RainfallAPI.Application.Contracts;
+using RainfallAPI.Application.Response;
 using Newtonsoft.Json;
 
 namespace RainfallAPI.Infrastracture.ExternalAPI
