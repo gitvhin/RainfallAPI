@@ -22,7 +22,6 @@ namespace RainfallAPI.Controllers
         {
             try
             {
-                int a = Convert.ToInt32("a");
                 var rainfallResponse = await _rainfallService.GetRainfallReadingsAsync(stationId, count);
 
                 return Ok(rainfallResponse);
