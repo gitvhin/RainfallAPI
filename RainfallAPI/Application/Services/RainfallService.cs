@@ -8,27 +8,25 @@ namespace RainfallAPI.Application.Services
 {
     public class RainfallService : IRainfallService
     {
-        private readonly IHttpClientFactory _clientFactory;
+        private readonly IExternalAPIService _externalApiService;
 
-        public RainfallService(IHttpClientFactory clientFactory)
+        public RainfallService(IExternalAPIService externalApiService)
         {
-            _clientFactory = clientFactory;
+            _externalApiService = externalApiService ?? throw new ArgumentNullException(nameof(externalApiService));
         }
 
         public async Task<RainfallReadingResponse> GetRainfallReadingsAsync(string stationId, int count = 10)
         {
-            // Retrieve base URL from configuration
-            var apiBaseUrl = "https://environment.data.gov.uk";
+            var externalApiResponse = await _externalApiService.GetRainfallReadingsFromExternalApiAsync(stationId, count);
+            
+            var rainfallReadings = MapToRainfallReadings(externalApiResponse);
+            return new RainfallReadingResponse { Readings = rainfallReadings };
+        }
 
-            // Create HTTP client
-            var client = _clientFactory.CreateClient();
-
-            // Construct API endpoint URL
-            var apiUrl = $"{apiBaseUrl}/flood-monitoring/id/stations/{stationId}/readings?_limit={count}";
-
-            // Send GET request to API endpoint
-            var response = await client.GetAsync(apiUrl);
-            return null;
+        private List<RainfallReading> MapToRainfallReadings(ExternalAPIResponse externalApiResponse)
+        {
+            //TODO ARVIN: Implement mapping logic from external API response to RainfallReading entities
+            return new List<RainfallReading>();
         }
     }
 }
