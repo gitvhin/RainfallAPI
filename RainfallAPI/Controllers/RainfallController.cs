@@ -26,7 +26,7 @@ namespace RainfallAPI.Controllers
         /// Retrieve the latest readings for the specified stationId
         /// </remarks>
         /// <param name="stationId">The ID of the reading station.</param>
-        /// <param name="count">The number of readings to retrieve.</param>
+        /// <param name="count">The number of readings to retrieve. <br> Minimum: 1 </br>Maximum: 100</param>
         /// <returns>An IActionResult representing the HTTP response.</returns>
         /// <response code="200">A list of rainfall readings successfully retrieved.</response>
         /// <response code="400">Invalid request.</response>
