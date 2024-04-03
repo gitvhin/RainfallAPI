@@ -1,49 +1,96 @@
-﻿// Represents the response from an external API
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
 namespace RainfallAPI.Application.Response
 {
+    /// <summary>
+    /// Represents the response from an external API.
+    /// </summary>
     public class ExternalAPIResponse
     {
-        // Context of the response
+        /// <summary>
+        /// Gets or sets the context of the response.
+        /// </summary>
         [JsonProperty("@context")]
         public string Context { get; set; }
-        // Metadata of the response
+
+        /// <summary>
+        /// Gets or sets the metadata of the response.
+        /// </summary>
         public Meta Meta { get; set; }
-        // Items in the response
+
+        /// <summary>
+        /// Gets or sets the items in the response.
+        /// </summary>
         public List<Item> Items { get; set; }
     }
 
+    /// <summary>
+    /// Represents the metadata of the response.
+    /// </summary>
     public class Meta
     {
-        // Publisher of the response
+        /// <summary>
+        /// Gets or sets the publisher of the response.
+        /// </summary>
         public string Publisher { get; set; }
-        // License of the response
+
+        /// <summary>
+        /// Gets or sets the license of the response.
+        /// </summary>
         public string Licence { get; set; }
-        // Documentation of the response
+
+        /// <summary>
+        /// Gets or sets the documentation of the response.
+        /// </summary>
         public string Documentation { get; set; }
-        // Version of the response
+
+        /// <summary>
+        /// Gets or sets the version of the response.
+        /// </summary>
         public string Version { get; set; }
-        // Comment about the response
+
+        /// <summary>
+        /// Gets or sets the comment about the response.
+        /// </summary>
         public string Comment { get; set; }
-        // Formats of the response
+
+        /// <summary>
+        /// Gets or sets the formats of the response.
+        /// </summary>
         public List<string> HasFormat { get; set; }
-        // Limit of the response
+
+        /// <summary>
+        /// Gets or sets the limit of the response.
+        /// </summary>
         public int Limit { get; set; }
     }
 
+    /// <summary>
+    /// Represents an item in the response.
+    /// </summary>
     public class Item
     {
-        // Identifier of the item
+        /// <summary>
+        /// Gets or sets the identifier of the item.
+        /// </summary>
         [JsonProperty("@id")]
         public string Id { get; set; }
-        // Date and time of measurement
+
+        /// <summary>
+        /// Gets or sets the date and time of measurement.
+        /// </summary>
         public DateTime DateTime { get; set; }
-        // Measurement unit
+
+        /// <summary>
+        /// Gets or sets the measurement unit.
+        /// </summary>
         public string Measure { get; set; }
-        // Value of the measurement
+
+        /// <summary>
+        /// Gets or sets the value of the measurement.
+        /// </summary>
         public double Value { get; set; }
     }
 }

@@ -1,13 +1,23 @@
-﻿// Represents constants used throughout the application
-namespace RainfallAPI.Constants
+﻿namespace RainfallAPI.Constants
 {
+    /// <summary>
+    /// Contains constant strings for error messages used throughout the application.
+    /// </summary>
     public static class ErrorMessages
     {
-        // Error message for an invalid request
+        /// <summary>
+        /// Error message for an invalid request.
+        /// </summary>
         public const string InvalidRequest = "Invalid request";
-        // Error message for not found
+
+        /// <summary>
+        /// Error message for not found.
+        /// </summary>
         public const string NotFound = "No readings found for the specified stationId";
-        // Error message for internal server error
+
+        /// <summary>
+        /// Error message for internal server error.
+        /// </summary>
         public const string InternalServerError = "Internal server error";
     }
 }

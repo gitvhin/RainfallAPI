@@ -1,13 +1,16 @@
-﻿// Represents the response for rainfall readings
-using RainfallAPI.Domain;
+﻿using RainfallAPI.Domain;
+using System.Collections.Generic;
 
 namespace RainfallAPI.Application.Response
 {
+    /// <summary>
+    /// Represents the response for rainfall readings.
+    /// </summary>
     public class RainfallReadingResponse
     {
-        // List of rainfall readings
+        /// <summary>
+        /// Gets or sets the list of rainfall readings.
+        /// </summary>
         public List<RainfallReading> Readings { get; set; }
     }
 }
-
-

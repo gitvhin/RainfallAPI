@@ -1,11 +1,18 @@
-﻿// Represents details of an error
-namespace RainfallAPI.Application.Response
+﻿namespace RainfallAPI.Application.Response
 {
+    /// <summary>
+    /// Represents details of an error.
+    /// </summary>
     public class ErrorDetail
     {
-        // Name of the property causing the error
+        /// <summary>
+        /// Gets or sets the name of the property causing the error.
+        /// </summary>
         public string PropertyName { get; set; }
-        // Error message
+
+        /// <summary>
+        /// Gets or sets the error message.
+        /// </summary>
         public string Message { get; set; }
     }
 }

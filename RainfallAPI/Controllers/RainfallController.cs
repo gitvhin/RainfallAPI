@@ -1,5 +1,4 @@
-﻿// Responsible for handling HTTP requests related to rainfall readings
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RainfallAPI.Application.Contracts;
 using RainfallAPI.Application.Response;
 using RainfallAPI.Application.Exceptions;
@@ -7,6 +6,9 @@ using RainfallAPI.Constants;
 
 namespace RainfallAPI.Controllers
 {
+    /// <summary>
+    /// Responsible for handling HTTP requests related to rainfall readings.
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class RainfallController : ControllerBase
@@ -18,9 +20,14 @@ namespace RainfallAPI.Controllers
             _rainfallService = rainfallService ?? throw new ArgumentNullException(nameof(rainfallService));
         }
 
-        // Retrieves rainfall readings for a specific station
+        /// <summary>
+        /// Retrieves rainfall readings for a specific station.
+        /// </summary>
+        /// <param name="stationId">The ID of the station.</param>
+        /// <param name="count">The number of readings to retrieve.</param>
+        /// <returns>An IActionResult representing the HTTP response.</returns>
         [HttpGet("id/{stationId}/readings")]
-        public async Task<IActionResult> GetRainfallReadings(string stationId, int count = 10)
+        public async Task<IActionResult> GetRainfallReadings(string stationId, int count = 1)
         {
             try
             {
