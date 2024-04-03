@@ -20,8 +20,11 @@ namespace RainfallAPI.Controllers
         }
 
         /// <summary>
-        /// Retrieves the latest readings for the specified stationId.
+        /// Get rainfall readings by station Id.
         /// </summary>
+        /// <remarks>
+        /// Retrieve the latest readings for the specified stationId
+        /// </remarks>
         /// <param name="stationId">The ID of the reading station.</param>
         /// <param name="count">The number of readings to retrieve.</param>
         /// <returns>An IActionResult representing the HTTP response.</returns>
