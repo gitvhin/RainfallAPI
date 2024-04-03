@@ -20,7 +20,7 @@ This project is a .NET Core API that interacts with the Environment Agency Rainf
 4. Restore the NuGet packages for the project.
 5. Build the project to ensure all dependencies are resolved.
 6. Run the project by pressing F5 or using the appropriate command in the terminal.
-7. Access the API documentation using Swagger UI at [https://localhost:<port>/swagger/index.html](https://localhost:<port>/swagger/index.html).
+7. Access the API documentation using Swagger UI at [https://localhost:3000/swagger/index.html](https://localhost:3000/swagger/index.html).
 
 ## Note
 Refer to the Swagger documentation generated for the API to understand the available endpoints and their functionalities.
