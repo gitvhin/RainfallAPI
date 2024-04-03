@@ -9,8 +9,7 @@ namespace RainfallAPI.Controllers
     /// <summary>
     /// Responsible for handling HTTP requests related to rainfall readings.
     /// </summary>
-    [ApiController]
-    [Route("[controller]")]
+    [ApiController]    
     public class RainfallController : ControllerBase
     {
         private readonly IRainfallService _rainfallService;
@@ -34,7 +33,7 @@ namespace RainfallAPI.Controllers
         [ProducesResponseType(typeof(ErrorResponse), 400)]
         [ProducesResponseType(typeof(ErrorResponse), 404)]
         [ProducesResponseType(typeof(ErrorResponse), 500)]
-        [HttpGet("id/{stationId}/readings")]
+        [HttpGet("rainfall/id/{stationId}/readings")]
         public async Task<IActionResult> GetRainfallReadings(string stationId, int count = 1)
         {
             try
