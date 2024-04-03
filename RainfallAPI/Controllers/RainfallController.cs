@@ -33,7 +33,7 @@ namespace RainfallAPI.Controllers
         [ProducesResponseType(typeof(RainfallReadingResponse), 200)]
         [ProducesResponseType(typeof(ErrorResponse), 400)]
         [ProducesResponseType(typeof(ErrorResponse), 404)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
         [HttpGet("id/{stationId}/readings")]
         public async Task<IActionResult> GetRainfallReadings(string stationId, int count = 1)
         {
