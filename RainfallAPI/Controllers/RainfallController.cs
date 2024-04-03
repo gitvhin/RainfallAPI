@@ -30,6 +30,10 @@ namespace RainfallAPI.Controllers
         /// <response code="400">Invalid request.</response>
         /// <response code="404">No readings found for the specified stationId.</response>
         /// <response code="500">Internal server error.</response>
+        [ProducesResponseType(typeof(RainfallReadingResponse), 200)]
+        [ProducesResponseType(typeof(ErrorResponse), 400)]
+        [ProducesResponseType(typeof(ErrorResponse), 404)]
+        [ProducesResponseType(500)]
         [HttpGet("id/{stationId}/readings")]
         public async Task<IActionResult> GetRainfallReadings(string stationId, int count = 1)
         {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace RainfallAPI.Application.Response
 {
     /// <summary>
-    /// Represents the response for rainfall readings.
+    /// Get rainfall readings response
     /// </summary>
     public class RainfallReadingResponse
     {
@@ -12,5 +12,6 @@ namespace RainfallAPI.Application.Response
         /// Gets or sets the list of rainfall readings.
         /// </summary>
         public List<RainfallReading> Readings { get; set; }
+
     }
 }

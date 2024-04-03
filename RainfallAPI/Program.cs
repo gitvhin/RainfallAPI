@@ -29,9 +29,10 @@ builder.Services.AddSwaggerGen(c =>
 
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.XML";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    c.IncludeXmlComments(xmlPath);
-    
+    c.IncludeXmlComments(xmlPath);    
 });
+
+builder.Services.AddControllers().ConfigureApiBehaviorOptions(x => { x.SuppressMapClientErrors = true; });
 
 // Register application services
 builder.Services.AddScoped<IRainfallService, RainfallService>();
@@ -43,6 +44,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
+    app.UseStaticFiles();
     app.UseSwaggerUI();
 }
 

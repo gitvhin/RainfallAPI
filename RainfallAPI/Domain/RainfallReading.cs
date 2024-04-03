@@ -1,8 +1,7 @@
 ﻿namespace RainfallAPI.Domain
 {
     /// <summary>
-    /// Represents rainfall readings containing information about the date and time
-    /// when the measurement was taken and the amount of rainfall measured.
+    ///  Details of a rainfall reading
     /// </summary>
     public class RainfallReading
     {

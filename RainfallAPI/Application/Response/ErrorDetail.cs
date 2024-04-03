@@ -1,7 +1,7 @@
 ﻿namespace RainfallAPI.Application.Response
 {
     /// <summary>
-    /// Represents details of an error.
+    /// Details of invalid request property
     /// </summary>
     public class ErrorDetail
     {

@@ -3,7 +3,7 @@
 namespace RainfallAPI.Application.Response
 {
     /// <summary>
-    /// Represents a generic error response.
+    /// An error object returned for failed requests
     /// </summary>
     public class ErrorResponse
     {
