@@ -2,6 +2,7 @@ using Microsoft.OpenApi.Models;
 using RainfallAPI.Application.Contracts;
 using RainfallAPI.Application.Services;
 using RainfallAPI.Infrastracture.ExternalAPI;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,9 +27,9 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 
-    var filePath = Path.Combine(System.AppContext.BaseDirectory, "RainfallAPI.xml");
-    c.IncludeXmlComments(filePath);
-
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.XML";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
     
 });
 
