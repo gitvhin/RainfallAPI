@@ -26,6 +26,10 @@ namespace RainfallAPI.Controllers
         /// <param name="stationId">The ID of the reading station.</param>
         /// <param name="count">The number of readings to retrieve.</param>
         /// <returns>An IActionResult representing the HTTP response.</returns>
+        /// <response code="200">A list of rainfall readings successfully retrieved.</response>
+        /// <response code="400">If the request is invalid.</response>
+        /// <response code="404">If the requested resource is not found.</response>
+        /// <response code="500">If an unexpected error occurs.</response>
         [HttpGet("id/{stationId}/readings")]
         public async Task<IActionResult> GetRainfallReadings(string stationId, int count = 1)
         {
