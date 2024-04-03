@@ -31,7 +31,8 @@ namespace RainfallAPI.Tests
             // Arrange
             var expectedItems = new List<Item>
             {
-                new Item { Id = "1", DateTime = DateTime.Now, Measure = "test", Value = 1.0 }
+                new Item { Id = "1", DateTime = DateTime.Now, Measure = "test1", Value = 1.0 },
+                new Item { Id = "2", DateTime = DateTime.Now, Measure = "test2", Value = 2.0 }
             };
 
             var externalApiResponse = new ExternalAPIResponse
@@ -49,7 +50,14 @@ namespace RainfallAPI.Tests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(expectedItems.Count, result.Readings.Count);            
+            Assert.AreEqual(expectedItems.Count, result.Readings.Count);
+
+            // Validate content
+            for (int i = 0; i < expectedItems.Count; i++)
+            {
+                Assert.AreEqual(expectedItems[i].DateTime, result.Readings[i].DateMeasured);
+                Assert.AreEqual((decimal)expectedItems[i].Value, result.Readings[i].AmountMeasured);
+            }
         }
 
         [Test]
