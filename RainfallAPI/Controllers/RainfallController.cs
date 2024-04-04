@@ -37,7 +37,7 @@ namespace RainfallAPI.Controllers
         [ProducesResponseType(typeof(ErrorResponse), 404)]
         [ProducesResponseType(typeof(ErrorResponse), 500)]
         [HttpGet("rainfall/id/{stationId}/readings")]
-        public async Task<IActionResult> GetRainfallReadings(string stationId, int count = 1)
+        public async Task<IActionResult> GetRainfallReadings(string stationId, int count = 10)
         {
             try
             {
