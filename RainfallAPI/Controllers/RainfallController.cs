@@ -3,7 +3,6 @@ using RainfallAPI.Application.Contracts;
 using RainfallAPI.Application.Response;
 using RainfallAPI.Application.Exceptions;
 using RainfallAPI.Constants;
-using System.ComponentModel.DataAnnotations;
 
 namespace RainfallAPI.Controllers
 {
@@ -38,11 +37,10 @@ namespace RainfallAPI.Controllers
         [ProducesResponseType(typeof(ErrorResponse), 404)]
         [ProducesResponseType(typeof(ErrorResponse), 500)]
         [HttpGet("rainfall/id/{stationId}/readings")]
-        public async Task<IActionResult> GetRainfallReadings(string stationId, [FromQuery, Range(1, 100)] int count = 10)
+        public async Task<IActionResult> GetRainfallReadings(string stationId, int count = 10)
         {
             try
             {
-
                 var rainfallResponse = await _rainfallService.GetRainfallReadingsAsync(stationId, count);
 
                 return Ok(rainfallResponse);
