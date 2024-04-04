@@ -3,13 +3,15 @@ using RainfallAPI.Application.Contracts;
 using RainfallAPI.Application.Response;
 using RainfallAPI.Application.Exceptions;
 using RainfallAPI.Constants;
+using System.ComponentModel.DataAnnotations;
 
 namespace RainfallAPI.Controllers
 {
     /// <summary>
     /// Responsible for handling HTTP requests related to rainfall readings.
     /// </summary>
-    [ApiController]    
+    [ApiController]
+    [Produces("application/json")]
     public class RainfallController : ControllerBase
     {
         private readonly IRainfallService _rainfallService;
@@ -26,7 +28,7 @@ namespace RainfallAPI.Controllers
         /// Retrieve the latest readings for the specified stationId
         /// </remarks>
         /// <param name="stationId">The ID of the reading station.</param>
-        /// <param name="count">The number of readings to retrieve. <br> Minimum: 1 </br>Maximum: 100</param>
+        /// <param name="count">The number of readings to retrieve.</param>
         /// <returns>An IActionResult representing the HTTP response.</returns>
         /// <response code="200">A list of rainfall readings successfully retrieved.</response>
         /// <response code="400">Invalid request.</response>
@@ -37,7 +39,7 @@ namespace RainfallAPI.Controllers
         [ProducesResponseType(typeof(ErrorResponse), 404)]
         [ProducesResponseType(typeof(ErrorResponse), 500)]
         [HttpGet("rainfall/id/{stationId}/readings")]
-        public async Task<IActionResult> GetRainfallReadings(string stationId, int count = 10)
+        public async Task<IActionResult> GetRainfallReadings(string stationId, [Range(1, 10)] int count = 10)
         {
             try
             {

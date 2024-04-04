@@ -27,7 +27,7 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 
-    c.AddServer(new OpenApiServer { Url = "http://localhost:3000", Description = "Rainfall Api" });
+    c.AddServer(new OpenApiServer { Url = "https://localhost:3000", Description = "Rainfall Api" });
 
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.XML";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
