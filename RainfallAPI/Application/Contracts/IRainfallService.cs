@@ -1,4 +1,4 @@
-﻿using RainfallAPI.Application.Response;
+﻿using RainfallAPI.Application.Models;
 using System.Threading.Tasks;
 
 namespace RainfallAPI.Application.Contracts

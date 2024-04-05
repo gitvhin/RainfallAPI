@@ -1,4 +1,4 @@
-﻿namespace RainfallAPI.Domain
+﻿namespace RainfallAPI.Domain.Entities
 {
     /// <summary>
     ///  Details of a rainfall reading

@@ -1,4 +1,4 @@
-﻿namespace RainfallAPI.Application.Response
+﻿namespace RainfallAPI.Application.Models
 {
     /// <summary>
     /// Details of invalid request property

@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RainfallAPI.Application.Contracts;
-using RainfallAPI.Application.Response;
-using RainfallAPI.Application.Exceptions;
-using RainfallAPI.Constants;
+using RainfallAPI.Application.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace RainfallAPI.Controllers
@@ -47,16 +45,19 @@ namespace RainfallAPI.Controllers
 
                 return Ok(rainfallResponse);
             }
-            catch (InvalidRequestException ex)
+            catch (ArgumentException ex)
             {
-                return BadRequest(CreateErrorResponse("Invalid request", ex.PropertyName, ex.Message));
+                // Return 400 Bad Request if argument exception is caught
+                return BadRequest(CreateErrorResponse("Invalid request", "stationId", ex.Message));
             }
-            catch (NotFoundException ex)
+            catch (InvalidOperationException ex)
             {
-                return NotFound(CreateErrorResponse("Not found", ex.PropertyName, ex.Message));
+                // Return 404 Not Found if invalid operation exception is caught
+                return NotFound(CreateErrorResponse("Not found", "stationId", ex.Message));
             }
             catch (Exception ex)
             {
+                // Any any other exceptions and return 500 Internal Server Error
                 return StatusCode(500, CreateErrorResponse("Server error", "server", ex.Message));
             }
         }

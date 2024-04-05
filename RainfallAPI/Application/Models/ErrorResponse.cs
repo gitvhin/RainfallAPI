@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RainfallAPI.Application.Response
+namespace RainfallAPI.Application.Models
 {
     /// <summary>
     /// An error object returned for failed requests

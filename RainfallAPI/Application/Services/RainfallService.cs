@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using RainfallAPI.Application.Contracts;
-using RainfallAPI.Application.Exceptions;
-using RainfallAPI.Application.Response;
-using RainfallAPI.Domain;
+using RainfallAPI.Application.Models;
+using RainfallAPI.Constants;
+using RainfallAPI.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace RainfallAPI.Application.Services
@@ -14,17 +18,20 @@ namespace RainfallAPI.Application.Services
     /// </summary>
     public class RainfallService : IRainfallService
     {
-        private readonly IExternalAPIService _externalApiService;
+        private readonly HttpClient _httpClient;
+        private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RainfallService"/> class.
         /// </summary>
-        /// <param name="externalApiService">The service responsible for interacting with the external API.</param>
+        /// <param name="httpClient">The HTTP client instance.</param>
+        /// <param name="configuration">The configuration.</param>
         /// <param name="mapper">The AutoMapper instance for mapping objects.</param>
-        public RainfallService(IExternalAPIService externalApiService, IMapper mapper)
+        public RainfallService(HttpClient httpClient, IConfiguration configuration, IMapper mapper)
         {
-            _externalApiService = externalApiService ?? throw new ArgumentNullException(nameof(externalApiService));
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
@@ -34,21 +41,36 @@ namespace RainfallAPI.Application.Services
         /// <param name="stationId">The ID of the rainfall station.</param>
         /// <param name="count">The number of readings to retrieve.</param>
         /// <returns>A task representing the asynchronous operation that returns the rainfall reading response.</returns>
-        /// <exception cref="InvalidRequestException">Thrown when the request is invalid.</exception>
-        /// <exception cref="NotFoundException">Thrown when the requested resource is not found.</exception>
+        /// <exception cref="ArgumentException">Thrown when the request is invalid.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the requested resource is not found or API base URL is not configured.</exception>
         public async Task<RainfallReadingResponse> GetRainfallReadingsAsync(string stationId, int count = 10)
         {
             ValidateRequest(stationId, count);
 
-            // Retrieve rainfall readings from external API
-            var externalApiResponse = await _externalApiService.GetRainfallReadingsFromExternalApiAsync(stationId, count);
+            var apiBaseUrl = _configuration.GetValue<string>("ApiSettings:BaseUrl");
+            if (string.IsNullOrEmpty(apiBaseUrl))
+                throw new InvalidOperationException("API base URL is not configured.");
 
-            // Check if the response contains data
-            if (externalApiResponse.Items == null || externalApiResponse.Items.Count == 0)
-                throw new NotFoundException("stationId", Constants.ErrorMessages.NotFound);
+            var apiUrl = $"{apiBaseUrl}/flood-monitoring/id/stations/{stationId}/readings?_limit={count}";
+
+            var response = await _httpClient.GetAsync(apiUrl);
+
+            // Check if response is successful
+            response.EnsureSuccessStatusCode();
+
+            // Read response body
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            // Deserialize JSON response into ExternalAPIResponse object
+            var externalAPIResponse = JsonConvert.DeserializeObject<ExternalAPIResponse>(responseBody);
+
+            if (externalAPIResponse.Items == null || externalAPIResponse.Items.Count == 0)
+            {
+                throw new InvalidOperationException(ErrorMessages.NotFound);
+            }
 
             // Implement mapping logic from external API response to RainfallReading entities
-            var rainfallReadings = _mapper.Map<List<Item>, List<RainfallReading>>(externalApiResponse.Items);
+            var rainfallReadings = _mapper.Map<List<Item>, List<RainfallReading>>(externalAPIResponse.Items);
 
             return new RainfallReadingResponse { Readings = rainfallReadings };
         }
@@ -57,10 +79,10 @@ namespace RainfallAPI.Application.Services
         private void ValidateRequest(string stationId, int count)
         {
             if (string.IsNullOrEmpty(stationId))
-                throw new InvalidRequestException("stationId", Constants.ErrorMessages.InvalidRequest);
+                throw new ArgumentException("stationId", ErrorMessages.InvalidRequest);
 
             if (count <= 0 || count > 100)
-                throw new InvalidRequestException("count", Constants.ErrorMessages.InvalidRequest);
+                throw new ArgumentException("count", ErrorMessages.InvalidRequest);
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using RainfallAPI.Application.Response;
-using RainfallAPI.Domain;
+using RainfallAPI.Application.Models;
+using RainfallAPI.Domain.Entities;
 
-namespace RainfallAPI.Application.Mapping
+namespace RainfallAPI.Application.Mappers
 {
     /// <summary>
     /// Responsible for defining mapping profiles for AutoMapper.

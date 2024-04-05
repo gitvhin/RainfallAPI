@@ -1,7 +1,7 @@
-﻿using RainfallAPI.Domain;
+﻿using RainfallAPI.Domain.Entities;
 using System.Collections.Generic;
 
-namespace RainfallAPI.Application.Response
+namespace RainfallAPI.Application.Models
 {
     /// <summary>
     /// Get rainfall readings response

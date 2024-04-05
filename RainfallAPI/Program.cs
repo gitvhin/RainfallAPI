@@ -1,7 +1,6 @@
 using Microsoft.OpenApi.Models;
 using RainfallAPI.Application.Contracts;
 using RainfallAPI.Application.Services;
-using RainfallAPI.Infrastracture.ExternalAPI;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,12 +33,8 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 
-
-builder.Services.AddControllers().ConfigureApiBehaviorOptions(x => { x.SuppressMapClientErrors = true; });
-
 // Register application services
 builder.Services.AddScoped<IRainfallService, RainfallService>();
-builder.Services.AddScoped<IExternalAPIService, RestClient>();
 
 var app = builder.Build();
 

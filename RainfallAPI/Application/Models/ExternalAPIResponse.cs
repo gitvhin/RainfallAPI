@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace RainfallAPI.Application.Response
+namespace RainfallAPI.Application.Models
 {
     /// <summary>
     /// Represents the response from an external API.
