@@ -18,9 +18,11 @@ namespace RainfallAPI.Application.Services
     /// </summary>
     public class RainfallService : IRainfallService
     {
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClientWrapper _httpClient;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
+        private readonly ILogger<RainfallService> _logger;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RainfallService"/> class.
@@ -28,11 +30,12 @@ namespace RainfallAPI.Application.Services
         /// <param name="httpClient">The HTTP client instance.</param>
         /// <param name="configuration">The configuration.</param>
         /// <param name="mapper">The AutoMapper instance for mapping objects.</param>
-        public RainfallService(HttpClient httpClient, IConfiguration configuration, IMapper mapper)
+        public RainfallService(IHttpClientWrapper httpClient, IConfiguration configuration, IMapper mapper, ILogger<RainfallService> logger)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _logger = logger;
         }
 
         /// <summary>
@@ -48,8 +51,12 @@ namespace RainfallAPI.Application.Services
             ValidateRequest(stationId, count);
 
             var apiBaseUrl = _configuration.GetValue<string>("ApiSettings:BaseUrl");
+
             if (string.IsNullOrEmpty(apiBaseUrl))
+            {
+                _logger.LogError("API base URL is not configured."); // Log error message
                 throw new InvalidOperationException("API base URL is not configured.");
+            }
 
             var apiUrl = $"{apiBaseUrl}/flood-monitoring/id/stations/{stationId}/readings?_limit={count}";
 
@@ -66,11 +73,14 @@ namespace RainfallAPI.Application.Services
 
             if (externalAPIResponse.Items == null || externalAPIResponse.Items.Count == 0)
             {
+                _logger.LogWarning("No readings found for the specified stationId: {StationId}", stationId); 
                 throw new InvalidOperationException(ErrorMessages.NotFound);
             }
 
             // Implement mapping logic from external API response to RainfallReading entities
             var rainfallReadings = _mapper.Map<List<Item>, List<RainfallReading>>(externalAPIResponse.Items);
+
+            _logger.LogInformation("Rainfall readings retrieved successfully for stationId: {StationId}", stationId);
 
             return new RainfallReadingResponse { Readings = rainfallReadings };
         }
@@ -78,11 +88,17 @@ namespace RainfallAPI.Application.Services
         // Validates the request parameters
         private void ValidateRequest(string stationId, int count)
         {
-            if (string.IsNullOrEmpty(stationId))
-                throw new ArgumentException("stationId", ErrorMessages.InvalidRequest);
+            if (string.IsNullOrWhiteSpace(stationId))
+            {
+                _logger.LogError("Invalid stationId: {StationId}", stationId); // Log error message
+                throw new ArgumentException("StationId cannot be null or empty.", nameof(stationId));
+            }
 
             if (count <= 0 || count > 100)
-                throw new ArgumentException("count", ErrorMessages.InvalidRequest);
+            {
+                _logger.LogError("Invalid count: {Count}", count); // Log error message
+                throw new ArgumentException("Count must be between 1 and 100.", nameof(count));
+            }
         }
     }
 }

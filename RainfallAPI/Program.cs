@@ -35,6 +35,7 @@ builder.Services.AddSwaggerGen(c =>
 
 // Register application services
 builder.Services.AddScoped<IRainfallService, RainfallService>();
+builder.Services.AddScoped<IHttpClientWrapper, HttpClientWrapper>();
 
 var app = builder.Build();
 
