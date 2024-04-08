@@ -88,7 +88,7 @@ namespace RainfallAPI.Tests
                    It.IsAny<LogLevel>(),
                    It.IsAny<EventId>(),
                    It.IsAny<It.IsAnyType>(),
-                   exception,
+                   It.IsAny<Exception>(),
                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
                Times.Once);
         }
@@ -108,7 +108,7 @@ namespace RainfallAPI.Tests
                     It.IsAny<LogLevel>(),
                     It.IsAny<EventId>(),
                     It.IsAny<It.IsAnyType>(),
-                    exception,
+                    It.IsAny<Exception>(),
                     (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
                 Times.Once);
         }
