@@ -6,9 +6,24 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddHttpClient();
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
+
+// Validate the base URL at service registration time
+var configuration = builder.Configuration;
+var baseUrl = configuration.GetValue<string>("ApiSettings:BaseUrl");
+
+if (string.IsNullOrEmpty(baseUrl))
+{
+    throw new InvalidOperationException("API base URL is not configured.");
+}
+
+// Configure named HttpClient with base URL
+builder.Services.AddHttpClient("RainfallAPI", client =>
+{
+    client.BaseAddress = new Uri(baseUrl);
+});
+
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -33,9 +48,9 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 
+
 // Register application services
 builder.Services.AddScoped<IRainfallService, RainfallService>();
-builder.Services.AddScoped<IHttpClientWrapper, HttpClientWrapper>();
 
 var app = builder.Build();
 
