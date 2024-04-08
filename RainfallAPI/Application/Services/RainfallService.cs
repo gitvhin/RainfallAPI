@@ -73,11 +73,10 @@ namespace RainfallAPI.Application.Services
 
         private void ValidateRequest(string stationId, int count)
         {
-            if (string.IsNullOrWhiteSpace(stationId))
+            if (string.IsNullOrWhiteSpace(stationId) || count <= 0 || count > 100)
+            {
                 throw new HttpRequestException(ErrorMessages.InvalidRequest, null, HttpStatusCode.BadRequest);
-
-            if (count <= 0 || count > 100)
-                throw new HttpRequestException(ErrorMessages.InvalidRequest, null, HttpStatusCode.BadRequest);
+            }
         }
     }
 }
