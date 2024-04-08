@@ -34,7 +34,7 @@ namespace RainfallAPI.Application.Services
         public async Task<RainfallReadingResponse> GetRainfallReadingsAsync(string stationId, int count = 10)
         {
             try
-            {
+             {
                 ValidateRequest(stationId, count);
 
                 var apiUrl = $"/flood-monitoring/id/stations/{stationId}/readings?_limit={count}";
@@ -45,21 +45,21 @@ namespace RainfallAPI.Application.Services
                 var responseBody = await response.Content.ReadAsStringAsync();
                 var externalAPIResponse = JsonConvert.DeserializeObject<ExternalAPIResponse>(responseBody);
 
-                if (externalAPIResponse.Items == null || externalAPIResponse.Items.Count == 0)                
-                    throw new HttpRequestException(ErrorMessages.NotFound, null, HttpStatusCode.NotFound);                
+                if (externalAPIResponse.Items == null || externalAPIResponse.Items.Count == 0)
+                    throw new HttpRequestException(ErrorMessages.NotFound, null, HttpStatusCode.NotFound);
 
                 var rainfallReadings = _mapper.Map<List<Item>, List<RainfallReading>>(externalAPIResponse.Items);
-                _logger.LogInformation("Rainfall readings retrieved successfully for stationId: {StationId}", stationId);
+                _logger.LogInformation($"Rainfall readings retrieved successfully for stationId: {stationId}");
 
                 return new RainfallReadingResponse { Readings = rainfallReadings };
             }
             catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound || ex.StatusCode == HttpStatusCode.BadRequest)
             {
                 if (ex.StatusCode == HttpStatusCode.NotFound)
-                    _logger.LogWarning("No readings found for the specified stationId: {StationId}", stationId);
+                    _logger.LogWarning($"No readings found for the specified stationId: {stationId}");
 
                 else if (ex.StatusCode == HttpStatusCode.BadRequest)
-                    _logger.LogError("Invalid stationId: {StationId}", stationId);
+                    _logger.LogError($"{ErrorMessages.InvalidRequest}: stationId: {stationId}, count: {count}");
 
                 throw;
             }
@@ -74,9 +74,7 @@ namespace RainfallAPI.Application.Services
         private void ValidateRequest(string stationId, int count)
         {
             if (string.IsNullOrWhiteSpace(stationId) || count <= 0 || count > 100)
-            {
                 throw new HttpRequestException(ErrorMessages.InvalidRequest, null, HttpStatusCode.BadRequest);
-            }
         }
     }
 }
