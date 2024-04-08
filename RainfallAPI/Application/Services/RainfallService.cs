@@ -33,6 +33,8 @@ namespace RainfallAPI.Application.Services
         /// <inheritdoc/>
         public async Task<RainfallReadingResponse> GetRainfallReadingsAsync(string stationId, int count = 10)
         {
+            var isNotFound = false;
+
             try
             {
                 ValidateRequest(stationId, count);
@@ -49,6 +51,7 @@ namespace RainfallAPI.Application.Services
 
                 if (externalAPIResponse.Items == null || externalAPIResponse.Items.Count == 0)
                 {
+                    isNotFound = true;
                     _logger.LogWarning("No readings found for the specified stationId: {StationId}", stationId);
                     throw new HttpRequestException(ErrorMessages.NotFound, null, HttpStatusCode.NotFound);
                 }
@@ -61,7 +64,8 @@ namespace RainfallAPI.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ErrorMessages.InternalServerError, stationId);
+                if (!isNotFound)
+                    _logger.LogError(ex, ErrorMessages.InternalServerError, stationId);
                 throw;
             }
         }
